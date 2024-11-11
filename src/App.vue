@@ -1,26 +1,33 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app">
+    <NavBar />
+    <Loader :loading="loading" />
+    <router-view />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import NavBar from './components/NavBar.vue';
+import Loader from './components/LoaderComp.vue';
 
 export default {
-  name: 'App',
   components: {
-    HelloWorld
+    NavBar,
+    Loader
+  },
+  data() {
+    return {
+      loading: false
+    };
+  },
+  created() {
+    this.$router.beforeEach((to, from, next) => {
+      this.loading = true;
+      next();
+    });
+    this.$router.afterEach(() => {
+      this.loading = false;
+    });
   }
-}
+};
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-</style>
